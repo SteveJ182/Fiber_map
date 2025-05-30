@@ -29,7 +29,10 @@ dest_data['Role'] = 'Destination'
 
 # Combine and remove empty hostnames
 combined = pd.concat([source_data, dest_data])
-combined = combined[combined['Hostname'].str.strip() != '']
+combined = combined[
+    combined['Hostname'].str.strip().str.upper().ne('') &
+    combined['Hostname'].str.strip().str.upper().ne('EMPTY')
+    ]
 
 # Group by location and hostname
 grouped = combined.groupby(['Location', 'Hostname', 'Role'])
